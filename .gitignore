@@ -1,0 +1,12 @@
+# cache
+*.pyc
+.vscode
+.kiro
+.agent.md
+.env
+
+#
+source/
+
+wkg.py
+wkg_*
