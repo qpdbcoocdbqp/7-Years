@@ -10,3 +10,12 @@ Benchmark for LLM collection. Playing with [7 Years](https://www.youtube.com/wat
 ## Reference
 
 * [cleanlab/structured-output-benchmark](https://github.com/cleanlab/structured-output-benchmark)
+
+## Subject
+
+| Subject           | Dataset             |
+| ----------------- | ------------------- |
+| Structured Output | data_table_analysis |
+| Structured Output | financial_entities  |
+| Structured Output | insurance_claims    |
+| Structured Output | pii_extraction      |
