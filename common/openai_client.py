@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Any, Optional
+from typing import Any, Optional, Tuple
 import openai
 from dotenv import load_dotenv
 
@@ -23,38 +23,37 @@ class OpenAIClient:
         self.client = openai.OpenAI(**client_kwargs)
     
     def get_structured_response(self, 
-                              prompt: str, 
+                              task: str, 
+                              system_prompt: str,
                               response_format: Any,
                               model: Optional[str] = None,
                               temperature: float = 0.0,
-                              max_tokens: Optional[int] = None) -> Dict[str, Any]:
+                              max_tokens: Optional[int] = None) -> Tuple[Any, bool]:
         model_name = model or self.model
         
         try:
             response = self.client.chat.completions.parse(
                 model=model_name,
                 messages=[
-                    {"role": "user", "content": prompt}
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": task}
                 ],
                 response_format=response_format,
                 temperature=temperature,
                 max_tokens=max_tokens
             )
             
-            return response.choices[0].message.content
+            return response, True
             
         except Exception as e:
-            print(f"API 呼叫錯誤: {e}")
-            return None
+            return {"error": f"{e}"}, False
     
 def create_openai_client(local: bool = False) -> OpenAIClient:
     if local:
-        # 本地 API 設定
         base_url = os.getenv("LOCAL_OPENAI_BASE_URL", "http://localhost:8000/v1")
         api_key = os.getenv("LOCAL_OPENAI_API_KEY", "local-key")
         model = os.getenv("LOCAL_OPENAI_MODEL", "gpt-4")
     else:
-        # 遠端 API 設定
         base_url = None
         api_key = None
         model = "gpt-4"
