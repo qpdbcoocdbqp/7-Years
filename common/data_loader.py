@@ -1,6 +1,8 @@
 import ast
-import pandas as pd
 import json
+import pandas as pd
+import pyarrow as pa
+import pyarrow.compute as pc
 from typing import Dict, Any, List, Tuple
 
 
@@ -131,3 +133,49 @@ def load_benchmark_data(benchmark_name: str,
     )
     
     return tasks, ground_truths, data, system_prompt
+
+
+def struct_flatten(df: pa.Table):
+    return df.flatten()
+
+def list_flatten(df: pa.Table):
+    flat_cols = []
+    for col in df.column_names:
+        flat_cols.append(pa.Table.from_arrays([
+            pc.list_parent_indices(df.column(col)),
+            pc.list_flatten(df.column(col))
+            ], names=["idx", col]))
+        del col
+    if len(flat_cols) == 1:
+        return flat_cols[0]
+    flat_df = flat_cols[0]
+    for rdf in flat_cols[1:]:
+        flat_df = flat_df.join(rdf, keys=["idx"], join_type="full outer")
+        del rdf
+    flat_df = flat_df.group_by(flat_df.column_names).aggregate([])
+    del flat_cols
+    return flat_df
+
+def data_table_analysis_flat(data_table_analysis):
+    df = pa.Table.from_pylist(data_table_analysis["ground_truth"].to_list())
+    df = struct_flatten(df)
+    return df
+
+def financial_entities_flat(financial_entities):
+    df = pa.Table.from_pylist(financial_entities["ground_truth"].to_list())
+    df = list_flatten(df)
+    return df
+
+def insurance_claims_flat(insurance_claims):
+    df = pa.Table.from_pylist(insurance_claims["ground_truth"].to_list())
+    df = df.append_column("idx", [list(range(len(df)))])
+    struct_cols = [x.name for x in df.schema if isinstance(x.type, pa.StructType)]
+    df_flat_struct = struct_flatten(df.select(struct_cols + ["idx"]))
+    list_cols = [x.name for x in df.schema if isinstance(x.type, pa.ListType)]
+    df_flat_list = struct_flatten(list_flatten(df.select(list_cols)))
+    output = (df.select(["idx"])
+              .join(df_flat_struct, keys=["idx"], join_type="full outer")
+              .join(df_flat_list, keys=["idx"], join_type="full outer")
+              )
+    del df, struct_cols, df_flat_struct, list_cols, df_flat_list
+    return output
