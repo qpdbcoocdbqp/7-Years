@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import pyarrow as pa
 import pyarrow.compute as pc
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, List
 
 
 class DataLoader:
@@ -134,7 +134,6 @@ def load_benchmark_data(benchmark_name: str,
     
     return tasks, ground_truths, data, system_prompt
 
-
 def struct_flatten(df: pa.Table):
     return df.flatten()
 
@@ -156,26 +155,63 @@ def list_flatten(df: pa.Table):
     del flat_cols
     return flat_df
 
-def data_table_analysis_flat(data_table_analysis):
-    df = pa.Table.from_pylist(data_table_analysis["ground_truth"].to_list())
+def safe_join_type(df):
+    for i, field in enumerate(df.schema):
+        if field.type == pa.null():
+            df = df.set_column(i, field.name, df.column(field.name).cast(pa.string()))
+    return df
+
+def data_table_analysis_flat(data: List[Dict]):
+    df = pa.Table.from_pylist(data)
     df = struct_flatten(df)
     return df
 
-def financial_entities_flat(financial_entities):
-    df = pa.Table.from_pylist(financial_entities["ground_truth"].to_list())
-    df = list_flatten(df)
-    return df
-
-def insurance_claims_flat(insurance_claims):
-    df = pa.Table.from_pylist(insurance_claims["ground_truth"].to_list())
-    df = df.append_column("idx", [list(range(len(df)))])
-    struct_cols = [x.name for x in df.schema if isinstance(x.type, pa.StructType)]
-    df_flat_struct = struct_flatten(df.select(struct_cols + ["idx"]))
+def financial_entities_flat(data: List[Dict]):
+    df = pa.Table.from_pylist(data)
     list_cols = [x.name for x in df.schema if isinstance(x.type, pa.ListType)]
-    df_flat_list = struct_flatten(list_flatten(df.select(list_cols)))
-    output = (df.select(["idx"])
-              .join(df_flat_struct, keys=["idx"], join_type="full outer")
-              .join(df_flat_list, keys=["idx"], join_type="full outer")
-              )
-    del df, struct_cols, df_flat_struct, list_cols, df_flat_list
+    if len(list_cols) == 0:
+        del list_cols
+        return df
+    unlist_cols = [col for col in df.column_names if col not in list_cols]
+    df = df.append_column("idx", [list(range(len(df)))])
+    df_flat_list = safe_join_type(list_flatten(df.select(list_cols)))
+    output = (
+        safe_join_type(df.select(["idx"] + unlist_cols)).join(df_flat_list, keys=["idx"], join_type="full outer")
+        ).drop_columns(["idx"])
+    del df, list_cols, unlist_cols, df_flat_list
     return output
+
+def insurance_claims_flat(data: List[Dict]):
+    df = pa.Table.from_pylist(data)
+    struct_cols = [x.name for x in df.schema if isinstance(x.type, pa.StructType)]
+    list_cols = [x.name for x in df.schema if isinstance(x.type, pa.ListType)]
+    unlist_cols = [col for col in df.column_names if col not in struct_cols and col not in list_cols]
+    if len(unlist_cols) > 0:
+        for col in unlist_cols:
+            if df.column(col).type == pa.null():
+                df = df.set_column(
+                    df.schema.get_field_index(col),
+                    col,
+                    df.column(col).cast(pa.string())
+                )
+            del col
+    df = df.append_column("idx", [list(range(len(df)))])
+    output = df.select(["idx"] + unlist_cols)
+    if len(struct_cols) > 0:
+        df_flat_struct = safe_join_type(struct_flatten(df.select(struct_cols + ["idx"])))
+        output = output.join(df_flat_struct, keys=["idx"], join_type="full outer")
+        del df_flat_struct
+    if len(list_cols) > 0:
+        df_flat_list = safe_join_type(struct_flatten(list_flatten(df.select(list_cols))))
+        output = output.join(df_flat_list, keys=["idx"], join_type="full outer")
+        del df_flat_list
+    output = output.drop_columns(["idx"])
+    del df, struct_cols, list_cols, unlist_cols
+    return output
+
+FLAT_TRANSFORMS = {
+    "data_table_analysis": data_table_analysis_flat,
+    "financial_entities": financial_entities_flat,
+    "insurance_claims": insurance_claims_flat,
+    "pii_extraction": None,
+}

@@ -1,11 +1,12 @@
 import json
 import time
+import pyarrow as pa
 from typing import Dict, Any, List, Optional
 from tqdm import tqdm
 
-from .evaluator import StructuredEvaluator
+from .evaluator import StructuredEvaluator, judge
 from .openai_client import OpenAIClient, create_openai_client
-from .data_loader import load_benchmark_data
+from .data_loader import load_benchmark_data, FLAT_TRANSFORMS
 
 
 class BenchmarkRunner:
@@ -40,8 +41,9 @@ class BenchmarkRunner:
         )
         
         print(f"load {len(tasks)} samples")
-        responses = []
-        targets = []
+        # responses = []
+        # targets = []
+        judgement = []
         error_logs = []
         for task, ground_truth in tqdm(zip(tasks, ground_truths), desc="send task"):
             response, status = self.openai_client.get_structured_response(
@@ -53,25 +55,37 @@ class BenchmarkRunner:
             )
             if status:
                 if response.choices[0].message.parsed:
-                    responses.append(response.choices[0].message.parsed.model_dump())
+                    # responses.append(response.choices[0].message.parsed.model_dump())
+                    fit = response.choices[0].message.parsed.model_dump()
                 else:
-                    responses.append(json.loads(response.choices[0].message.content))
-                targets.append(ground_truth)
+                    # responses.append(json.loads(response.choices[0].message.content))
+                    fit = json.loads(response.choices[0].message.content)
+                judgement.append(judge(
+                    true_dict=ground_truth,
+                    fit_dict=fit,
+                    flat_transform=FLAT_TRANSFORMS.get(self.benchmark_name))
+                    )
+                # targets.append(ground_truth)
             else:
                 error_logs.append(response)
             del response, status
-        results = self._evaluate_accuracy(responses, targets)
-        stats = self._calculate_statistics(results, responses)
+
+        # results = self._evaluate_accuracy(responses, targets)
+        # stats = self._calculate_statistics(results, responses)
+
+        judgement = pa.concat_tables(judgement)
+        field_stats = judgement.group_by(["key"]).aggregate([("is_correct", "mean")]).rename_columns(["field", "accuracy"]).to_pylist()
+
         final_results = {
             "benchmark_name": self.benchmark_name,
             "model": model or self.openai_client.model,
             "sample_size": len(tasks),
-            "success_number": len(responses),
+            "success_number": len(tasks) - len(error_logs),
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "statistics": stats,
-            "detailed_results": results
+            "statistics": field_stats,
+            # "detailed_results": results
         }
-        print(f"Overall accuracy: {stats['overall_accuracy']:.2%}")
+        # print(f"Overall accuracy: {stats['overall_accuracy']:.2%}")
         return final_results
     
     def _evaluate_accuracy(self, 
