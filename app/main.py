@@ -27,5 +27,5 @@ for benchmark_name in benchmarks:
         temperature=temperature,
         max_workers=max_workers
         )
-    for key in ["benchmark_name", "model", "sample_size", "success_number", "timestamp", "statistics"]:
+    for key in ["benchmark_name", "model", "sample_size", "success_number", "overall_accuracy", "timestamp", "statistics"]:
         console.print(f"[yellow]{key}[/yellow]", results.get(key))

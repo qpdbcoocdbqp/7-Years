@@ -147,9 +147,10 @@ def list_flatten(df: pa.Table):
         del col
     if len(flat_cols) == 1:
         return flat_cols[0]
-    flat_df = flat_cols[0]
+
+    flat_df = safe_join_type(flat_cols[0])
     for rdf in flat_cols[1:]:
-        flat_df = flat_df.join(rdf, keys=["idx"], join_type="full outer")
+        flat_df = flat_df.join(safe_join_type(rdf), keys=["idx"], join_type="full outer")
         del rdf
     flat_df = flat_df.group_by(flat_df.column_names).aggregate([])
     del flat_cols

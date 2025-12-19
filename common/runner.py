@@ -41,8 +41,7 @@ class BenchmarkRunner:
         )
         
         print(f"load {len(tasks)} samples")
-        # responses = []
-        # targets = []
+
         judgement = []
         error_logs = []
         for task, ground_truth in tqdm(zip(tasks, ground_truths), desc="send task"):
@@ -55,24 +54,19 @@ class BenchmarkRunner:
             )
             if status:
                 if response.choices[0].message.parsed:
-                    # responses.append(response.choices[0].message.parsed.model_dump())
                     fit = response.choices[0].message.parsed.model_dump()
                 else:
-                    # responses.append(json.loads(response.choices[0].message.content))
                     fit = json.loads(response.choices[0].message.content)
                 judgement.append(judge(
                     true_dict=ground_truth,
                     fit_dict=fit,
                     flat_transform=FLAT_TRANSFORMS.get(self.benchmark_name))
                     )
-                # targets.append(ground_truth)
             else:
                 error_logs.append(response)
             del response, status
 
-        # results = self._evaluate_accuracy(responses, targets)
-        # stats = self._calculate_statistics(results, responses)
-
+        overall_accuracy = sum(list(map(lambda x: all(x.column("is_correct")), judgement))) / len(judgement)
         judgement = pa.concat_tables(judgement)
         field_stats = judgement.group_by(["key"]).aggregate([("is_correct", "mean")]).rename_columns(["field", "accuracy"]).to_pylist()
 
@@ -81,64 +75,12 @@ class BenchmarkRunner:
             "model": model or self.openai_client.model,
             "sample_size": len(tasks),
             "success_number": len(tasks) - len(error_logs),
+            "overall_accuracy": overall_accuracy,
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "statistics": field_stats,
-            # "detailed_results": results
         }
-        # print(f"Overall accuracy: {stats['overall_accuracy']:.2%}")
+        print(f"Overall accuracy: {overall_accuracy:.2%}")
         return final_results
-    
-    def _evaluate_accuracy(self, 
-                         responses: List[Optional[Dict[str, Any]]], 
-                         targets: List[Dict[str, Any]]) -> Dict[str, Any]:
-        valid_pairs = [
-            (pred, true) for pred, true in zip(responses, targets)
-            if pred is not None
-        ]
-        if not valid_pairs:
-            return {
-                "overall_correctness": [],
-                "field_breakdowns": [],
-                "failed_responses": len(responses)
-            }
-        valid_predictions, valid_targets = zip(*valid_pairs)
-        overall_correctness, field_breakdowns = self.evaluator.evaluate_response_accuracy_with_breakdown(
-            list(valid_predictions), list(valid_targets)
-        )
-        return {
-            "overall_correctness": overall_correctness.tolist(),
-            "field_breakdowns": field_breakdowns,
-            "failed_responses": len(responses) - len(valid_pairs)
-        }
-    
-    def _calculate_statistics(self, 
-                            results: Dict[str, Any],
-                            responses: List[Optional[Dict[str, Any]]],
-                            ) -> Dict[str, Any]:
-        overall_correctness = results["overall_correctness"]
-        field_breakdowns = results["field_breakdowns"]
-        # failed_responses = results["failed_responses"]
-        # total_samples = len(responses)
-        # valid_samples = len(overall_correctness)
-        overall_accuracy = sum(overall_correctness) / len(overall_correctness) if overall_correctness else 0.0
-        # success_rate = valid_samples / total_samples if total_samples > 0 else 0.0
-        field_stats = {}
-        if field_breakdowns:
-            all_fields = set()
-            for breakdown in field_breakdowns:
-                all_fields.update(breakdown.keys())
-            
-            for field in all_fields:
-                field_correct = sum(1 for breakdown in field_breakdowns if breakdown.get(field, False))
-                field_stats[field] = field_correct / len(field_breakdowns)
-        return {
-            # "total_samples": total_samples,
-            # "valid_samples": valid_samples,
-            # "failed_samples": failed_responses,
-            # "success_rate": success_rate,
-            "overall_accuracy": overall_accuracy,
-            "field_accuracies": field_stats
-        }
 
 def run_benchmark(benchmark_name: str,
                  schema: Any,
