@@ -26,20 +26,34 @@
 
 * [app/feature_rlm](../app/feature_rlm.py)
 
-    For debug, use settings `persistent=True` and `verbose=True`
-    
-    * settings
+    For debug, use settings `verbose=True`
+
+    * Default use `environment="local"`
+      * settings
+
+          ```python
+          rlm = RLM(
+              ...,
+              environment="local",
+              verbose=True,
+              )
+          ```
+
+    * Use `environment="docker"`
+
+        ```sh
+        docker pull python:3.11-slim
+        ```
 
         ```python
         rlm = RLM(
             ...,
-            environment="local",
-            persistent=True,
+            environment="docker",
             verbose=True,
             )
         ```
 
-    * example output:
+    * example output will like
 
         ```sh
         ...
@@ -50,9 +64,9 @@
         │
         ╰───────────────
 
-        Iterations       4
-        Total Time       264.49s
-        Input Tokens     20,580
-        Output Tokens    2,393
+        Iterations       <Iterations>
+        Total Time       <Total Time>
+        Input Tokens     <Input Tokens>
+        Output Tokens    <Output Tokens>
 
         ```
