@@ -1,5 +1,6 @@
 import os
 import dotenv
+import json
 from rlm import RLM
 from rlm.logger import RLMLogger
 
@@ -36,5 +37,6 @@ else:
     print("Trajectory: (none — no logger or metadata not captured)")
 
 print("Full response:", response)
+print("Full trajectory:", json.dumps(traj["iterations"], indent=2))
 
 rlm.close()
