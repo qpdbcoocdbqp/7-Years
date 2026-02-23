@@ -10,6 +10,8 @@ Benchmark for LLM collection. Playing with [7 Years](https://www.youtube.com/wat
 ## Reference
 
 * [cleanlab/structured-output-benchmark](https://github.com/cleanlab/structured-output-benchmark)
+* [alexzhang13/rlm](https://github.com/alexzhang13/rlm)
+
 
 ## Subject
 
@@ -19,3 +21,10 @@ Benchmark for LLM collection. Playing with [7 Years](https://www.youtube.com/wat
 | Structured Output | financial_entities  |
 | Structured Output | insurance_claims    |
 | Structured Output | pii_extraction      |
+
+
+---
+
+## Feature
+
+* [Recursive Language Models (RLMs)](docs/rlm.md)

@@ -5,8 +5,13 @@
 .agent.md
 .env
 
-#
+# folder
 source/
 
+# file
+*.jsonl
+
+# custom
 wkg.py
 wkg_*
+dev-*
