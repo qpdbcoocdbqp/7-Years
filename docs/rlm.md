@@ -22,6 +22,8 @@
     ]
     ```
 
+    * For example, use [`mistralai/Ministral-3-3B-Instruct-2512`](https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512) model. Here modify chat template into [chat_template_rlm.jinja](../examples/chat_template_rlm.jinja) to satisfy the input format.
+
 ## Example
 
 * [app/feature_rlm](../app/feature_rlm.py)
@@ -69,4 +71,17 @@
         Input Tokens     <Input Tokens>
         Output Tokens    <Output Tokens>
 
+        ```
+
+    * RLM logger visualizer
+      
+      The visualization UI for log files that `RLMLogger` written.
+
+        ```sh
+        git clone https://github.com/alexzhang13/rlm.git
+        cd rlm/visualizer/
+        pnpm install
+        pnpm run dev --hostname localhost --port 19001
+
+        # http://localhost:19001
         ```

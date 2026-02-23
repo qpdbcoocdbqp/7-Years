@@ -6,7 +6,7 @@ from rlm.logger import RLMLogger
 
 
 dotenv.load_dotenv()
-logger = RLMLogger()
+logger = RLMLogger(log_dir="./logs")
 rlm = RLM(
     backend="openai",
     backend_kwargs={  
