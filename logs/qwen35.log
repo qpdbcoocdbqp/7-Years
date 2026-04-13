@@ -1,0 +1,150 @@
+Start data_table_analysis benchmark
+load dataset
+load 100 samples
+send task: 100it [04:12,  2.52s/it]
+Overall accuracy: 5.00%
+benchmark_name data_table_analysis
+model qwen-thinking
+sample_size 100
+success_number 100
+overall_accuracy 0.05
+timestamp 2026-03-14 16:49:35
+statistics
+[
+    {'field': 'num_rows', 'accuracy': 0.48},
+    {'field': 'num_columns', 'accuracy': 1.0},
+    {'field': 'column_types.Beta', 'accuracy': 0.9076923076923077},
+    {'field': 'column_types.Identifier', 'accuracy': 1.0},
+    {'field': 'column_max.Beta', 'accuracy': 0.7230769230769231},
+    {'field': 'column_max.Identifier', 'accuracy': 1.0},
+    {'field': 'column_min.Beta', 'accuracy': 0.7076923076923077},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.35},
+    {'field': 'identifier_last', 'accuracy': 0.32},
+    {'field': 'identifier_shortest', 'accuracy': 0.23},
+    {'field': 'column_types.Alpha', 'accuracy': 0.9230769230769231},
+    {'field': 'column_max.Alpha', 'accuracy': 0.7384615384615385},
+    {'field': 'column_min.Alpha', 'accuracy': 0.6923076923076923},
+    {'field': 'column_types.Delta', 'accuracy': 0.9473684210526315},
+    {'field': 'column_max.Delta', 'accuracy': 0.631578947368421},
+    {'field': 'column_min.Delta', 'accuracy': 0.631578947368421},
+    {'field': 'column_types.Gamma', 'accuracy': 0.8888888888888888},
+    {'field': 'column_max.Gamma', 'accuracy': 0.6666666666666666},
+    {'field': 'column_min.Gamma', 'accuracy': 0.7777777777777778},
+    {'field': 'column_types.Epsilon', 'accuracy': 0.8181818181818182},
+    {'field': 'column_max.Epsilon', 'accuracy': 0.8181818181818182},
+    {'field': 'column_min.Epsilon', 'accuracy': 0.7272727272727273}
+]
+Start financial_entities benchmark
+load dataset
+load 2117 samples
+send task: 2117it [43:48,  1.24s/it]
+Overall accuracy: 31.84%
+benchmark_name financial_entities
+model qwen-thinking
+sample_size 2117
+success_number 2117
+overall_accuracy 0.31837505904581953
+timestamp 2026-03-14 17:33:25
+statistics
+[
+    {'field': 'Date', 'accuracy': 0.704388389771942},
+    {'field': 'Location', 'accuracy': 0.8585003455425018},
+    {'field': 'Money', 'accuracy': 0.9101589495507948},
+    {'field': 'Product', 'accuracy': 0.8403593642017968},
+    {'field': 'Quantity', 'accuracy': 0.8797512093987561},
+    {'field': 'Person', 'accuracy': 0.9187975120939875},
+    {'field': 'Company', 'accuracy': 0.6705252246026261}
+]
+Start insurance_claims benchmark
+benchmark_name insurance_claims
+model qwen-thinking
+sample_size 30
+success_number 1
+overall_accuracy 1.0
+timestamp 2026-03-14 17:36:15
+statistics
+[
+    {'field': 'policy_details', 'accuracy': 1.0},
+    {'field': 'insured_objects', 'accuracy': 1.0},
+    {'field': 'header.channel', 'accuracy': 1.0},
+    {'field': 'header.claim_id', 'accuracy': 1.0},
+    {'field': 'header.incident_date', 'accuracy': 1.0},
+    {'field': 'header.report_date', 'accuracy': 1.0},
+    {'field': 'header.reported_by', 'accuracy': 1.0},
+    {'field': 'incident_description.incident_type', 'accuracy': 1.0},
+    {'field': 'incident_description.location_type', 'accuracy': 1.0},
+    {'field': 'incident_description.police_report_number', 'accuracy': 1.0},
+    {'field': 'incident_description.estimated_damage_amount', 'accuracy': 1.0}
+]
+Start pii_extraction benchmark
+load dataset
+load 100 samples
+send task: 100it [16:22,  9.82s/it]
+Overall accuracy: 11.00%
+benchmark_name pii_extraction
+model qwen-thinking
+sample_size 100
+success_number 100
+overall_accuracy 0.11
+timestamp 2026-03-14 17:52:39
+statistics
+[
+    {'field': 'ACCOUNTNAME', 'accuracy': 0.52},
+    {'field': 'ACCOUNTNUMBER', 'accuracy': 0.79},
+    {'field': 'AGE', 'accuracy': 0.96},
+    {'field': 'AMOUNT', 'accuracy': 0.92},
+    {'field': 'BIC', 'accuracy': 1.0},
+    {'field': 'BITCOINADDRESS', 'accuracy': 0.96},
+    {'field': 'BUILDINGNUMBER', 'accuracy': 0.99},
+    {'field': 'CITY', 'accuracy': 0.91},
+    {'field': 'COMPANYNAME', 'accuracy': 0.94},
+    {'field': 'COUNTY', 'accuracy': 0.93},
+    {'field': 'CREDITCARDCVV', 'accuracy': 0.99},
+    {'field': 'CREDITCARDISSUER', 'accuracy': 0.99},
+    {'field': 'CREDITCARDNUMBER', 'accuracy': 0.96},
+    {'field': 'CURRENCY', 'accuracy': 0.93},
+    {'field': 'CURRENCYCODE', 'accuracy': 0.93},
+    {'field': 'CURRENCYNAME', 'accuracy': 0.96},
+    {'field': 'CURRENCYSYMBOL', 'accuracy': 0.96},
+    {'field': 'DATE', 'accuracy': 0.91},
+    {'field': 'DOB', 'accuracy': 0.94},
+    {'field': 'EMAIL', 'accuracy': 1.0},
+    {'field': 'ETHEREUMADDRESS', 'accuracy': 0.99},
+    {'field': 'EYECOLOR', 'accuracy': 0.98},
+    {'field': 'FIRSTNAME', 'accuracy': 0.8},
+    {'field': 'GENDER', 'accuracy': 0.93},
+    {'field': 'HEIGHT', 'accuracy': 1.0},
+    {'field': 'IBAN', 'accuracy': 0.97},
+    {'field': 'IP', 'accuracy': 0.89},
+    {'field': 'IPV4', 'accuracy': 0.99},
+    {'field': 'IPV6', 'accuracy': 0.98},
+    {'field': 'JOBAREA', 'accuracy': 0.95},
+    {'field': 'JOBTITLE', 'accuracy': 0.96},
+    {'field': 'JOBTYPE', 'accuracy': 0.97},
+    {'field': 'LASTNAME', 'accuracy': 0.85},
+    {'field': 'LITECOINADDRESS', 'accuracy': 0.99},
+    {'field': 'MAC', 'accuracy': 1.0},
+    {'field': 'MASKEDNUMBER', 'accuracy': 0.95},
+    {'field': 'MIDDLENAME', 'accuracy': 0.93},
+    {'field': 'NEARBYGPSCOORDINATE', 'accuracy': 0.96},
+    {'field': 'ORDINALDIRECTION', 'accuracy': 0.95},
+    {'field': 'PASSWORD', 'accuracy': 1.0},
+    {'field': 'PHONEIMEI', 'accuracy': 0.98},
+    {'field': 'PHONENUMBER', 'accuracy': 0.96},
+    {'field': 'PIN', 'accuracy': 1.0},
+    {'field': 'PREFIX', 'accuracy': 0.93},
+    {'field': 'SECONDARYADDRESS', 'accuracy': 1.0},
+    {'field': 'SEX', 'accuracy': 0.98},
+    {'field': 'SSN', 'accuracy': 0.97},
+    {'field': 'STATE', 'accuracy': 0.96},
+    {'field': 'STREET', 'accuracy': 0.98},
+    {'field': 'TIME', 'accuracy': 0.96},
+    {'field': 'URL', 'accuracy': 1.0},
+    {'field': 'USERAGENT', 'accuracy': 1.0},
+    {'field': 'USERNAME', 'accuracy': 0.95},
+    {'field': 'VEHICLEVIN', 'accuracy': 0.98},
+    {'field': 'VEHICLEVRM', 'accuracy': 0.99},
+    {'field': 'ZIPCODE', 'accuracy': 1.0}
+]
+>>> 
