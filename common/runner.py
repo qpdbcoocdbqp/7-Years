@@ -66,9 +66,13 @@ class BenchmarkRunner:
                 error_logs.append(response)
             del response, status
 
-        overall_accuracy = sum(list(map(lambda x: all(x.column("is_correct")), judgement))) / len(judgement)
-        judgement = pa.concat_tables(judgement)
-        field_stats = judgement.group_by(["key"]).aggregate([("is_correct", "mean")]).rename_columns(["field", "accuracy"]).to_pylist()
+        if len(judgement) == 0:
+            overall_accuracy = 0.0
+            field_stats = []
+        else:
+            overall_accuracy = sum(list(map(lambda x: all(x.column("is_correct")), judgement))) / len(judgement)
+            judgement = pa.concat_tables(judgement)
+            field_stats = judgement.group_by(["key"]).aggregate([("is_correct", "mean")]).rename_columns(["field", "accuracy"]).to_pylist()
 
         final_results = {
             "benchmark_name": self.benchmark_name,

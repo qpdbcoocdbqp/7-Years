@@ -21,7 +21,7 @@ for benchmark_name in benchmarks:
     results = run_benchmark(
         benchmark_name=benchmark_name,
         schema=schema,
-        sample_size=sample_size,
+        sample_size=-1,
         use_local_api=use_local_api,
         model=model,
         temperature=temperature,

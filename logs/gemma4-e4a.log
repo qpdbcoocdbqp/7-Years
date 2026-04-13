@@ -1,0 +1,148 @@
+Start data_table_analysis benchmark
+load dataset
+load 100 samples
+send task: 100it [05:05,  3.06s/it]
+Overall accuracy: 3.00%
+
+benchmark_name data_table_analysis
+model alm
+sample_size 100
+success_number 100
+overall_accuracy 0.03
+timestamp 2026-04-13 22:04:08
+statistics
+[
+    {'field': 'num_rows', 'accuracy': 0.54},
+    {'field': 'num_columns', 'accuracy': 0.99},
+    {'field': 'column_types.Beta', 'accuracy': 0.9076923076923077},
+    {'field': 'column_types.Identifier', 'accuracy': 1.0},
+    {'field': 'column_max.Beta', 'accuracy': 0.7538461538461538},
+    {'field': 'column_max.Identifier', 'accuracy': 1.0},
+    {'field': 'column_min.Beta', 'accuracy': 0.676923076923077},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.5},
+    {'field': 'identifier_last', 'accuracy': 0.31},
+    {'field': 'identifier_shortest', 'accuracy': 0.08},
+    {'field': 'column_types.Alpha', 'accuracy': 0.8769230769230769},
+    {'field': 'column_max.Alpha', 'accuracy': 0.6923076923076923},
+    {'field': 'column_min.Alpha', 'accuracy': 0.7076923076923077},
+    {'field': 'column_types.Gamma', 'accuracy': 0.8148148148148148},
+    {'field': 'column_max.Gamma', 'accuracy': 0.6666666666666666},
+    {'field': 'column_min.Gamma', 'accuracy': 0.7777777777777778},
+    {'field': 'column_types.Unnamed: 2', 'accuracy': None},
+    {'field': 'column_max.Unnamed: 2', 'accuracy': None},
+    {'field': 'column_min.Unnamed: 2', 'accuracy': None},
+    {'field': 'column_types.Delta', 'accuracy': 1.0},
+    {'field': 'column_types.Epsilon', 'accuracy': 0.8181818181818182},
+    {'field': 'column_max.Delta', 'accuracy': 0.7368421052631579},
+    {'field': 'column_max.Epsilon', 'accuracy': 0.9090909090909091},
+    {'field': 'column_min.Delta', 'accuracy': 0.631578947368421},
+    {'field': 'column_min.Epsilon', 'accuracy': 0.7272727272727273}
+]
+Start financial_entities benchmark
+load dataset
+load 2117 samples
+send task: 2117it [56:00,  1.59s/it]
+Overall accuracy: 29.48%
+
+benchmark_name financial_entities
+model alm
+sample_size 2117
+success_number 2117
+overall_accuracy 0.2947567312234294
+timestamp 2026-04-13 23:00:09
+statistics
+[
+    {'field': 'Date', 'accuracy': 0.8792328956461645},
+    {'field': 'Location', 'accuracy': 0.8282653766413269},
+    {'field': 'Money', 'accuracy': 0.8144436765722184},
+    {'field': 'Product', 'accuracy': 0.8211817553559088},
+    {'field': 'Quantity', 'accuracy': 0.8676572218382861},
+    {'field': 'Person', 'accuracy': 0.9780580511402902},
+    {'field': 'Company', 'accuracy': 0.6916033172080166}
+]
+Start insurance_claims benchmark
+load dataset
+load 30 samples
+send task: 30it [03:03,  6.13s/it]
+Overall accuracy: 0.00%
+
+benchmark_name insurance_claims
+model alm
+sample_size 30
+success_number 0
+overall_accuracy 0.0
+timestamp 2026-04-13 23:09:40
+statistics
+[]
+Start pii_extraction benchmark
+load dataset
+load 100 samples
+send task: 100it [17:36, 10.56s/it]
+Overall accuracy: 10.00%
+
+benchmark_name pii_extraction
+model alm
+sample_size 100
+success_number 100
+overall_accuracy 0.1
+timestamp 2026-04-13 23:27:17
+statistics
+[
+    {'field': 'ACCOUNTNAME', 'accuracy': 0.72},
+    {'field': 'ACCOUNTNUMBER', 'accuracy': 0.88},
+    {'field': 'AGE', 'accuracy': 0.98},
+    {'field': 'AMOUNT', 'accuracy': 0.96},
+    {'field': 'BIC', 'accuracy': 1.0},
+    {'field': 'BITCOINADDRESS', 'accuracy': 0.96},
+    {'field': 'BUILDINGNUMBER', 'accuracy': 0.99},
+    {'field': 'CITY', 'accuracy': 0.92},
+    {'field': 'COMPANYNAME', 'accuracy': 0.95},
+    {'field': 'COUNTY', 'accuracy': 0.92},
+    {'field': 'CREDITCARDCVV', 'accuracy': 0.99},
+    {'field': 'CREDITCARDISSUER', 'accuracy': 0.98},
+    {'field': 'CREDITCARDNUMBER', 'accuracy': 0.96},
+    {'field': 'CURRENCY', 'accuracy': 0.94},
+    {'field': 'CURRENCYCODE', 'accuracy': 0.97},
+    {'field': 'CURRENCYNAME', 'accuracy': 1.0},
+    {'field': 'CURRENCYSYMBOL', 'accuracy': 0.95},
+    {'field': 'DATE', 'accuracy': 0.94},
+    {'field': 'DOB', 'accuracy': 0.94},
+    {'field': 'EMAIL', 'accuracy': 1.0},
+    {'field': 'ETHEREUMADDRESS', 'accuracy': 1.0},
+    {'field': 'EYECOLOR', 'accuracy': 0.98},
+    {'field': 'FIRSTNAME', 'accuracy': 0.77},
+    {'field': 'GENDER', 'accuracy': 0.94},
+    {'field': 'HEIGHT', 'accuracy': 1.0},
+    {'field': 'IBAN', 'accuracy': 0.94},
+    {'field': 'IP', 'accuracy': 0.89},
+    {'field': 'IPV4', 'accuracy': 0.98},
+    {'field': 'IPV6', 'accuracy': 0.99},
+    {'field': 'JOBAREA', 'accuracy': 0.94},
+    {'field': 'JOBTITLE', 'accuracy': 0.92},
+    {'field': 'JOBTYPE', 'accuracy': 0.97},
+    {'field': 'LASTNAME', 'accuracy': 0.91},
+    {'field': 'LITECOINADDRESS', 'accuracy': 1.0},
+    {'field': 'MAC', 'accuracy': 1.0},
+    {'field': 'MASKEDNUMBER', 'accuracy': 0.97},
+    {'field': 'MIDDLENAME', 'accuracy': 0.93},
+    {'field': 'NEARBYGPSCOORDINATE', 'accuracy': 0.96},
+    {'field': 'ORDINALDIRECTION', 'accuracy': 0.98},
+    {'field': 'PASSWORD', 'accuracy': 1.0},
+    {'field': 'PHONEIMEI', 'accuracy': 0.98},
+    {'field': 'PHONENUMBER', 'accuracy': 0.93},
+    {'field': 'PIN', 'accuracy': 1.0},
+    {'field': 'PREFIX', 'accuracy': 0.93},
+    {'field': 'SECONDARYADDRESS', 'accuracy': 1.0},
+    {'field': 'SEX', 'accuracy': 0.95},
+    {'field': 'SSN', 'accuracy': 0.97},
+    {'field': 'STATE', 'accuracy': 0.95},
+    {'field': 'STREET', 'accuracy': 0.98},
+    {'field': 'TIME', 'accuracy': 0.98},
+    {'field': 'URL', 'accuracy': 1.0},
+    {'field': 'USERAGENT', 'accuracy': 0.99},
+    {'field': 'USERNAME', 'accuracy': 0.95},
+    {'field': 'VEHICLEVIN', 'accuracy': 0.98},
+    {'field': 'VEHICLEVRM', 'accuracy': 0.99},
+    {'field': 'ZIPCODE', 'accuracy': 0.99}
+]
