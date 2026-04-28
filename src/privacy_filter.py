@@ -1,5 +1,5 @@
 # uv pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu128
-# uv pip install -U "transformers>=4.36,<4.58.0"
+# transformers==5.7.0.dev0
 import os
 from pathlib import Path
 
@@ -14,7 +14,15 @@ tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = ORTModelForTokenClassification.from_pretrained(
     checkpoint, 
     file_name="model_q4.onnx"
-)
+    )
+
+# Usage is the same as standard transformers
+inputs = tokenizer("My name is Alice Smith", return_tensors="pt")
+outputs = model(**inputs)
+
+predicted_token_class_ids = outputs.logits.argmax(dim=-1)
+predicted_token_classes = [model.config.id2label[token_id.item()] for token_id in predicted_token_class_ids[0]]
+print(predicted_token_classes)
 
 
 #### offical example
