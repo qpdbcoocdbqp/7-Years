@@ -1,0 +1,61 @@
+Start data_table_analysis benchmark
+load dataset
+load 100 samples
+send task: 100it [02:51,  1.72s/it]
+Overall accuracy: 3.00%
+benchmark_name data_table_analysis
+model nemo
+sample_size 100
+success_number 100
+overall_accuracy 0.03
+timestamp 2026-04-20 22:29:20
+statistics
+[
+    {'field': 'num_rows', 'accuracy': 0.88},
+    {'field': 'num_columns', 'accuracy': 1.0},
+    {'field': 'column_types.Beta', 'accuracy': 0.9230769230769231},
+    {'field': 'column_types.Identifier', 'accuracy': 1.0},
+    {'field': 'column_max.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_max.Identifier', 'accuracy': 1.0},
+    {'field': 'column_min.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'column_max.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_max.Identifier', 'accuracy': 1.0},
+    {'field': 'column_min.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'column_max.Identifier', 'accuracy': 1.0},
+    {'field': 'column_min.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'column_min.Beta', 'accuracy': 0.4461538461538462},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'column_min.Identifier', 'accuracy': 1.0},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'identifier_first', 'accuracy': 0.52},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'identifier_last', 'accuracy': 0.41},
+    {'field': 'identifier_shortest', 'accuracy': 0.2},
+    {'field': 'column_types.Alpha', 'accuracy': 0.8225806451612904},
+    {'field': 'column_max.Alpha', 'accuracy': 0.45161290322580644},
+    {'field': 'column_min.Alpha', 'accuracy': 0.45161290322580644},
+    {'field': 'column_min.Alpha', 'accuracy': 0.45161290322580644},
+    {'field': 'column_types.Delta', 'accuracy': 0.9473684210526315},
+    {'field': 'column_types.Delta', 'accuracy': 0.9473684210526315},
+    {'field': 'column_max.Delta', 'accuracy': 0.47368421052631576},
+    {'field': 'column_min.Delta', 'accuracy': 0.47368421052631576},
+    {'field': 'column_min.Delta', 'accuracy': 0.47368421052631576},
+    {'field': 'column_types.Gamma', 'accuracy': 0.8148148148148148},
+    {'field': 'column_max.Gamma', 'accuracy': 0.4074074074074074},
+    {'field': 'column_min.Gamma', 'accuracy': 0.4074074074074074},
+    {'field': 'column_types.Epsilon', 'accuracy': 0.7272727272727273},
+    {'field': 'column_max.Epsilon', 'accuracy': 0.45454545454545453},
+    {'field': 'column_min.Epsilon', 'accuracy': 0.45454545454545453}
+]
