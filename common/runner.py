@@ -1,4 +1,5 @@
 import json
+import re
 import time
 import pyarrow as pa
 from typing import Dict, Any, List, Optional
@@ -53,15 +54,41 @@ class BenchmarkRunner:
                 temperature=temperature
             )
             if status:
-                if response.choices[0].message.parsed:
-                    fit = response.choices[0].message.parsed.model_dump()
-                else:
-                    fit = json.loads(response.choices[0].message.content)
-                judgement.append(judge(
-                    true_dict=ground_truth,
-                    fit_dict=fit,
-                    flat_transform=FLAT_TRANSFORMS.get(self.benchmark_name))
-                    )
+                try:
+                    if response.choices[0].message.parsed:
+                        fit = response.choices[0].message.parsed.model_dump()
+                    else:
+                        content = response.choices[0].message.content
+                        if not content:
+                            raise ValueError("Empty response content from model")
+                        
+                        # Try direct JSON parse
+                        try:
+                            fit = json.loads(content)
+                        except json.JSONDecodeError:
+                            # Try to extract JSON from text (e.g. markdown blocks)
+                            json_match = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
+                            if json_match:
+                                fit = json.loads(json_match.group(1))
+                            else:
+                                # Try finding the first '{' and last '}'
+                                start = content.find('{')
+                                end = content.rfind('}')
+                                if start != -1 and end != -1:
+                                    fit = json.loads(content[start:end+1])
+                                else:
+                                    raise
+                    
+                    judgement.append(judge(
+                        true_dict=ground_truth,
+                        fit_dict=fit,
+                        flat_transform=FLAT_TRANSFORMS.get(self.benchmark_name))
+                        )
+                except (json.JSONDecodeError, ValueError, AttributeError) as e:
+                    print(f"Error processing response: {e}")
+                    if not response.choices[0].message.parsed:
+                        print(f"Raw content: {response.choices[0].message.content}")
+                    error_logs.append({"error": str(e), "response": str(response)})
             else:
                 error_logs.append(response)
             del response, status

@@ -28,3 +28,7 @@ Benchmark for LLM collection. Playing with [7 Years](https://www.youtube.com/wat
 ## Feature
 
 * [Recursive Language Models (RLMs)](docs/rlm.md)
+
+## Conclusion
+
+* `chat.completions.parse` not working for Hermes-Agent
